@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const { ApolloServer } = require('apollo-server-express')
 const graphql = require('./graphql')
+const config = require('./config')
 
 const app = express()
 
@@ -20,4 +21,4 @@ server.applyMiddleware({ app })
 
 app.get('/', (_, res) => res.send('Hello World!'))
 
-app.listen({ port: 5000 }, () => console.log('🚀 Server ready at http://localhost:5000'))
+app.listen({ port: config.app.port }, () => console.log(`🚀 Server running at port ${config.app.port}`))
