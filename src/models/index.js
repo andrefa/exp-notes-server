@@ -5,6 +5,7 @@ const expenses = require('./expenses')
 const places = require('./places')
 const sources = require('./sources')
 const trips = require('./trips')
+const users = require('./users')
 
 module.exports = [
   budgets,
@@ -13,5 +14,6 @@ module.exports = [
   expenses,
   places,
   sources,
-  trips
+  trips,
+  users
 ]

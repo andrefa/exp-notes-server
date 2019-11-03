@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server-express')
-const db = require('../database')
-const { capitalize } = require('../utils')
+const db = require('../../database')
+const { capitalize } = require('../../utils')
 
 module.exports = ({ singular, plural }) => {
   const entity = capitalize(singular)

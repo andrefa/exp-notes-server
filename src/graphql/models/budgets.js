@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server-express')
-const db = require('../database')
+const db = require('../../database')
 
 const typeDefs = gql`
   extend type Query {
