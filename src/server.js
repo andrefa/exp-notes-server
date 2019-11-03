@@ -12,13 +12,9 @@ const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
+app.get('/', (_, res) => res.send('It\'s alive!'))
 
-const server = new ApolloServer({
-  modules: graphql
-})
-
+const server = new ApolloServer({ modules: graphql })
 server.applyMiddleware({ app })
-
-app.get('/', (_, res) => res.send('Hello World!'))
 
 app.listen({ port: config.app.port }, () => console.log(`🚀 Server running at port ${config.app.port}`))

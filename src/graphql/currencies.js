@@ -9,6 +9,7 @@ const typeDefs = gql`
   type Currency {
     id: ID!
     name: String
+    symbol: String
   }
 `
 

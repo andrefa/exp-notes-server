@@ -14,7 +14,7 @@ const typeDefs = gql`
     budgets: [Budget]
     expenses: [Expense]
   }
-  type Mutation {
+  extend type Mutation {
     addTrip(name: String, start_date: String, end_date: String): Trip
   }
 `

@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => sequelize.define('currencies', {
   name: {
     type: DataTypes.STRING(50),
     allowNull: false
+  },
+  symbol: {
+    type: DataTypes.STRING(4),
+    allowNull: false
   }
 }, {
   tableName: 'currencies'
