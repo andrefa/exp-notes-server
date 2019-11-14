@@ -3,7 +3,7 @@ const db = require('../../database')
 
 const typeDefs = gql`
   extend type Query {
-    tasks: [Task]
+    tasks(trip_id: ID!): [Task]
     task(id: ID!): Task
   }
   type Task {
@@ -22,8 +22,8 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    tasks: async () => db.tasks.findAll(),
-    task: async (_, args) => db.tasks.findByPk(args.id)
+    tasks: async (_, args) => db.tasks.findAll({ where: { trip_id: args.trip_id } }),
+    task: async (_, { id }) => db.tasks.findByPk(id)
   },
   Task: {
     trip: async (obj) => db.trips.findByPk(obj.trip_id)
