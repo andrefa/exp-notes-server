@@ -14,7 +14,8 @@ const typeDefs = gql`
     complete: Boolean
   }
   extend type Mutation {
-    addTask(trip_id: Int, description: String, complete: Boolean): Task
+    addTask(trip_id: Int!, description: String!): Task
+    editTask(id: ID!, description: String!): Task
     toggleTask(id: ID!, complete: Boolean!): Task
     deleteTask(id: ID!): Int
   }
@@ -31,9 +32,13 @@ const resolvers = {
   Mutation: {
     addTask: async (_, args) => db.tasks.create({
       trip_id: args.trip_id,
-      description: args.description,
-      complete: args.complete
+      description: args.description
     }),
+    editTask: async (_, { id, description }) => {
+      const params = { returning: true, where: { id } }
+      const result = await db.tasks.update({ description }, params)
+      return result[1][0]
+    },
     toggleTask: async (_, { id, complete }) => {
       const params = { returning: true, where: { id } }
       const result = await db.tasks.update({ complete }, params)
