@@ -23,7 +23,10 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    tasks: async (_, args) => db.tasks.findAll({ where: { trip_id: args.trip_id } }),
+    tasks: async (_, args) => db.tasks.findAll({
+      where: { trip_id: args.trip_id },
+      order: [['id', 'ASC']]
+    }),
     task: async (_, { id }) => db.tasks.findByPk(id)
   },
   Task: {
