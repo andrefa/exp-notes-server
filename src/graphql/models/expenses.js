@@ -3,7 +3,7 @@ const db = require('../../database')
 
 const typeDefs = gql`
   extend type Query {
-    expenses: [Expense]
+    expenses(trip_id: ID!): [Expense]
     expense(id: ID!): Expense
   }
   type Expense {
@@ -31,7 +31,10 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    expenses: async () => db.expenses.findAll(),
+    expenses: async (_, args) => db.expenses.findAll({
+      where: { trip_id: args.trip_id },
+      order: [['date', 'ASC']]
+    }),
     expense: async (_, args) => db.expenses.findByPk(args.id)
   },
   Expense: {
