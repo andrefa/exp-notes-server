@@ -4,7 +4,7 @@ const db = require('../../database')
 const typeDefs = gql`
   extend type Query {
     currencies: [Currency]
-    currencie(id: ID!): Currency
+    currency(id: ID!): Currency
   }
   type Currency {
     id: ID!
@@ -21,7 +21,7 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     currencies: async () => db.currencies.findAll(),
-    currencie: async (_, args) => db.currencies.findByPk(args.id)
+    currency: async (_, args) => db.currencies.findByPk(args.id)
   },
   Mutation: {
     addCurrency: async (_, { name, symbol }) => db.currencies.create({ name, symbol }),

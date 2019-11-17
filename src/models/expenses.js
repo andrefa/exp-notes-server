@@ -48,6 +48,14 @@ module.exports = (sequelize, DataTypes) => sequelize.define('expenses', {
       model: 'places',
       key: 'id'
     }
+  },
+  currency_id: {
+    type: DataTypes.BIGINT,
+    allowNull: false,
+    references: {
+      model: 'currencies',
+      key: 'id'
+    }
   }
 }, {
   tableName: 'expenses'
