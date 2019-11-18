@@ -2,6 +2,7 @@ const budgets = require('./budgets')
 const categories = require('./categories')
 const currencies = require('./currencies')
 const expenses = require('./expenses')
+const reports = require('./reports')
 const tasks = require('./tasks')
 const trips = require('./trips')
 
@@ -12,6 +13,7 @@ module.exports = [
   categories,
   currencies,
   expenses,
+  reports,
   tasks,
   trips,
 
