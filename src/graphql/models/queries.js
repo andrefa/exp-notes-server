@@ -20,14 +20,16 @@ const spentPerCategory = (tripId) => `
   order by 2 desc;
 `
 
-const spentPerDay = (tripId) => `
+const spentPerDayAndCategory = (tripId) => `
   select
-    date as "day",
-    sum(price) amount
-  from expenses
+    ex.date as "day",
+    ct.name category,
+    sum(ex.price) amount
+  from expenses ex
+  inner join categories ct on ex.category_id = ct.id
   where trip_id=${tripId}
-  group by date
-  order by 1 asc;
+  group by ex.date, ct.name
+  order by ex.date;
 `
 
 const remainingDays = (tripId) => `
@@ -64,7 +66,7 @@ const remainingAmountPerDay = (tripId) => `
 module.exports = {
   spentPerSource,
   spentPerCategory,
-  spentPerDay,
+  spentPerDayAndCategory,
   remainingDays,
   remainingAmountPerSource,
   remainingAmountPerDay
