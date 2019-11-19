@@ -44,8 +44,8 @@ const remainingAmountPerSource = (tripId) => `
     sr.name source,
     bg.amount amount,
     bg.amount -
-    (select sum(ex.price) from expenses ex
-      where ex.trip_id=bg.trip_id and ex.source_id=bg.source_id) remaining_per_source
+    greatest((select sum(ex.price) from expenses ex
+      where ex.trip_id=bg.trip_id and ex.source_id=bg.source_id), 0) remaining_per_source
   from budgets bg
   inner join sources sr on bg.source_id=sr.id
   where bg.trip_id=${tripId};
@@ -53,12 +53,12 @@ const remainingAmountPerSource = (tripId) => `
 
 const remainingAmountPerDay = (tripId) => `
   select
-    (select sum(bg.amount) from budgets bg where bg.trip_id=ts.id)
+    (greatest((select sum(bg.amount) from budgets bg where bg.trip_id=ts.id), 0)
     -
-    (select sum(ex.price) from expenses ex where ex.trip_id=ts.id)
+    greatest((select sum(ex.price) from expenses ex where ex.trip_id=ts.id), 0))
     /
     greatest(1, days_till_end(ts.start_date, ts.end_date))
-    as remaining_per_day
+      as remaining_per_day
   from trips ts
   where ts.id=${tripId};
 `
