@@ -1,5 +1,6 @@
 const { gql } = require('apollo-server-express')
 const db = require('../../database')
+const queries = require('./queries')
 
 const typeDefs = gql`
   extend type Query {
@@ -14,6 +15,8 @@ const typeDefs = gql`
     budgets: [Budget]
     expenses: [Expense]
     tasks: [Task]
+    remaining_days: Int
+    remaning_amount_per_day: Float
   }
   extend type Mutation {
     addTrip(name: String, start_date: String, end_date: String): Trip
@@ -21,6 +24,14 @@ const typeDefs = gql`
     deleteTrip(id: ID!): Int
   }
 `
+
+const runQuery = async (query, column) => {
+  const result = await db.sequelize.query(
+    query, { type: db.sequelize.QueryTypes.SELECT, plain: true }
+  )
+
+  return result[column]
+}
 
 const resolvers = {
   Query: {
@@ -34,9 +45,15 @@ const resolvers = {
     })
   },
   Trip: {
-    budgets: async (obj) => db.budgets.findAll({ where: { trip_id: obj.id } }),
-    expenses: async (obj) => db.expenses.findAll({ where: { trip_id: obj.id } }),
-    tasks: async (obj) => db.tasks.findAll({ where: { trip_id: obj.id } })
+    budgets: async ({ id }) => db.budgets.findAll({ where: { trip_id: id } }),
+    expenses: async ({ id }) => db.expenses.findAll({ where: { trip_id: id } }),
+    tasks: async ({ id }) => db.tasks.findAll({ where: { trip_id: id } }),
+    remaining_days: async ({ id }) => runQuery(
+      queries.remainingDays(id), 'remaining_days'
+    ),
+    remaning_amount_per_day: async ({ id }) => runQuery(
+      queries.remainingAmountPerDay(id), 'remaining_per_day'
+    )
   },
   Mutation: {
     addTrip: async (_, args) => db.trips.create({
