@@ -43,7 +43,8 @@ const resolvers = {
   Query: {
     trips: async (_, args, { user }) => db.trips.findAll({
       include: [{ model: db.users, as: 'users' }],
-      where: { '$users.id$': user.id }
+      where: { '$users.id$': user.id },
+      order: [['start_date', 'asc']]
     }),
     trip: async (_, args, { user }) => db.trips.findOne({
       include: [{ model: db.users, as: 'users' }],
@@ -53,7 +54,8 @@ const resolvers = {
   Trip: {
     users: async ({ id }) => db.users.findAll({
       include: [{ model: db.trips, as: 'trips' }],
-      where: { '$trips.id$': id }
+      where: { '$trips.id$': id },
+      order: [['name', 'asc']]
     }),
     budgets: async ({ id }) => db.budgets.findAll({ where: { trip_id: id } }),
     expenses: async ({ id }) => db.expenses.findAll({ where: { trip_id: id } }),
