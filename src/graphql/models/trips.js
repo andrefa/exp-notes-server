@@ -12,11 +12,17 @@ const typeDefs = gql`
     name: String
     start_date: String
     end_date: String
+    users: [User]
     budgets: [Budget]
     expenses: [Expense]
     tasks: [Task]
     remaining_days: Int
     remaning_amount_per_day: Float
+  }
+  type User {
+    id: ID!
+    name: String
+    email: String
   }
   extend type Mutation {
     addTrip(name: String, start_date: String, end_date: String): Trip
@@ -45,6 +51,10 @@ const resolvers = {
     })
   },
   Trip: {
+    users: async ({ id }) => db.users.findAll({
+      include: [{ model: db.trips, as: 'trips' }],
+      where: { '$trips.id$': id }
+    }),
     budgets: async ({ id }) => db.budgets.findAll({ where: { trip_id: id } }),
     expenses: async ({ id }) => db.expenses.findAll({ where: { trip_id: id } }),
     tasks: async ({ id }) => db.tasks.findAll({ where: { trip_id: id } }),
