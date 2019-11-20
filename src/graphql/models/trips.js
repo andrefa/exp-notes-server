@@ -24,8 +24,14 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    trips: async () => db.trips.findAll(),
-    trip: async (_, args) => db.trips.findByPk(args.id)
+    trips: async (_, args, { user }) => db.trips.findAll({
+      include: [{ model: db.users, as: 'users' }],
+      where: { '$users.id$': user.id }
+    }),
+    trip: async (_, args, { user }) => db.trips.findOne({
+      include: [{ model: db.users, as: 'users' }],
+      where: { id: args.id, '$users.id$': user.id }
+    })
   },
   Trip: {
     budgets: async (obj) => db.budgets.findAll({ where: { trip_id: obj.id } }),

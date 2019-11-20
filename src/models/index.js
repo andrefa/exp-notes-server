@@ -7,6 +7,7 @@ const sources = require('./sources')
 const tasks = require('./tasks')
 const trips = require('./trips')
 const users = require('./users')
+const userTrips = require('./userTrips')
 
 module.exports = [
   budgets,
@@ -17,5 +18,6 @@ module.exports = [
   sources,
   tasks,
   trips,
-  users
+  users,
+  userTrips
 ]
