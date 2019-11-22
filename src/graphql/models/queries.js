@@ -41,14 +41,14 @@ const remainingDays = (tripId) => `
 
 const remainingAmountPerSource = (tripId) => `
   select
-    sr.name source,
-    bg.amount amount,
-    bg.amount -
-    ROUND(greatest((select sum(ex.price) from expenses ex
-      where ex.trip_id=bg.trip_id and ex.source_id=bg.source_id), 0), 2) remaining_per_source
-  from budgets bg
-  inner join sources sr on bg.source_id=sr.id
-  where bg.trip_id=${tripId};
+    sr.name "source",
+    greatest(max(bg.amount), 0) amount,
+    (greatest(max(bg.amount), 0) - sum(ex.price)) remaining_per_source
+  from expenses ex
+  inner join sources sr on ex.source_id = sr.id
+  left join budgets bg on (ex.source_id = bg.source_id and ex.trip_id = bg.trip_id)
+  where ex.trip_id = ${tripId}
+  group by sr.name;
 `
 
 const remainingAmountPerDay = (tripId) => `
