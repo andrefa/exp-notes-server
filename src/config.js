@@ -5,6 +5,6 @@ module.exports = {
     port: env.PORT
   },
   db: {
-    uri: env.DATABASE_URL_NO_SSL
+    uri: env.DATABASE_URL
   }
 }
