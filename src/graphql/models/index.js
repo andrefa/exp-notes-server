@@ -1,3 +1,4 @@
+const auth = require('./auth')
 const budgets = require('./budgets')
 const categories = require('./categories')
 const currencies = require('./currencies')
@@ -9,6 +10,7 @@ const trips = require('./trips')
 const domain = require('./domain')
 
 module.exports = [
+  auth,
   budgets,
   categories,
   currencies,
