@@ -23,11 +23,13 @@ server.applyMiddleware({ app })
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body
-  const token = await authenticate({ email, password })
 
-  res.json({
-    token
-  })
+  try {
+    const authToken = await authenticate({ email, password })
+    res.json({ authToken })
+  } catch (error) {
+    res.status(401).json({ error: error.message })
+  }
 })
 
 app.listen({ port: config.app.port }, () => console.log(`🚀 Server running at port ${config.app.port}`))

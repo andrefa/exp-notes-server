@@ -16,7 +16,7 @@ const authenticate = async ({ email, password }) => {
   })
 
   if (!user) {
-    throw new Error('Unauthorized!')
+    throw new Error('Invalid user or password.')
   }
 
   return user.token
